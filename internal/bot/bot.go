@@ -37,6 +37,7 @@ func Run() {
 		bot.WithGatewayConfigOpts(
 			gateway.WithIntents(gateway.IntentGuildMessages, gateway.IntentDirectMessages),
 		),
+		bot.WithEventListenerFunc(b.onApplicationCommand),
 	)
 	if err != nil {
 		slog.Error("error starting disgo client", "error", err)
@@ -72,4 +73,20 @@ func newBot() *Bot {
 type Bot struct {
 	Client   bot.Client
 	Handlers map[string]func(e *events.ApplicationCommandInteractionCreate, d discord.MessageCommandInteractionData) error
+}
+
+func (b *Bot) onApplicationCommand(event *events.ApplicationCommandInteractionCreate) {
+	data := event.MessageCommandInteractionData()
+	cmdName := data.CommandName()
+
+	slog.Info("interaction received", "username", event.User().Username, "command", cmdName)
+
+	handler, ok := b.Handlers[cmdName]
+	if !ok {
+		slog.Info("unknown command", "command", cmdName)
+		return
+	}
+	if err := handler(event, data); err != nil {
+		slog.Error("error handling command", "error", err)
+	}
 }
