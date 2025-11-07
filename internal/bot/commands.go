@@ -12,7 +12,7 @@ import (
 
 var commands = []discord.ApplicationCommandCreate{
 	discord.MessageCommandCreate{
-		Name: "Bookmark local",
+		Name: "Bookmark",
 	},
 }
 

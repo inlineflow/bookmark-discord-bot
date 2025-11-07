@@ -81,9 +81,9 @@ func (b *Bot) onApplicationCommand(event *events.ApplicationCommandInteractionCr
 
 	slog.Info("interaction received", "username", event.User().Username, "command", cmdName)
 
-	handler, ok := b.Handlers[cmdName]
+	handler, ok := b.Handlers[data.CommandName()]
 	if !ok {
-		slog.Info("unknown command", "command", cmdName)
+		slog.Info("unknown command", "command", data.CommandName())
 		return
 	}
 	if err := handler(event, data); err != nil {

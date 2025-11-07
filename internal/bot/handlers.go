@@ -9,8 +9,7 @@ import (
 
 func (b *Bot) bookmark(e *events.ApplicationCommandInteractionCreate, d discord.MessageCommandInteractionData) error {
 	msg := d.Resolved.Messages[d.TargetID()]
-	ptr := &msg
-	if ptr == nil {
+	if &msg == nil {
 		return InvisibleReply("Could not find the message.", e)
 	}
 
@@ -22,7 +21,7 @@ func (b *Bot) bookmark(e *events.ApplicationCommandInteractionCreate, d discord.
 	if err != nil {
 		slog.Error("failed to fetch channel", "error", err)
 	}
-	msgGuild, err := b.Client.Rest().GetChannel(*e.GuildID())
+	msgGuild, err := b.Client.Rest().GetGuild(*e.GuildID(), false)
 	if err != nil {
 		slog.Error("failed to fetch guild", "error", err)
 	}

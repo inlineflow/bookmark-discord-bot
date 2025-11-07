@@ -28,14 +28,14 @@ func InvisibleReply(content string, e *events.ApplicationCommandInteractionCreat
 	return nil
 }
 
-func EmbedResponse(b *Bot, m discord.Message, dm *discord.DMChannel, c discord.Channel, g discord.Channel, e *events.ApplicationCommandInteractionCreate) error {
+func EmbedResponse(b *Bot, m discord.Message, dm *discord.DMChannel, c discord.Channel, g *discord.RestGuild, e *events.ApplicationCommandInteractionCreate) error {
 	fields := []discord.EmbedField{
 		{
 			Name:  "From",
-			Value: fmt.Sprintf("%s, $%s", g, c),
+			Value: fmt.Sprintf("%s, #%s", g.Name, c.Name()),
 		},
 		{
-			Value: fmt.Sprintf("[Link to the original message](https://discord.com/channels/%v/%v/%v)", g.ID(), m.ChannelID, m.ID),
+			Value: fmt.Sprintf("[Link to the original message](https://discord.com/channels/%v/%v/%v)", g.ID, m.ChannelID, m.ID),
 		},
 		{
 			Name:  "Message preview",
@@ -52,6 +52,7 @@ func EmbedResponse(b *Bot, m discord.Message, dm *discord.DMChannel, c discord.C
 		SetColor(0xED4245).
 		SetAuthor(m.Author.Username, "", "").
 		SetFields(fields...).
+		SetTimestamp(time.Now().UTC()).
 		Build()
 	embed.Timestamp.Format(time.RFC3339)
 
@@ -63,7 +64,7 @@ func EmbedResponse(b *Bot, m discord.Message, dm *discord.DMChannel, c discord.C
 		slog.Error("failed to send bookmark DM", "error", err)
 		return err
 	}
-	return nil
+	return InvisibleReply("Bookmark has been sent to your DMs.", e)
 }
 
 func pluralize(s string, n int) string {
