@@ -1,7 +1,7 @@
 package bot
 
 import (
-	logging "bookmark-bot/internal"
+	"bookmark-bot/internal/logging"
 	"context"
 	"log/slog"
 	"os"
