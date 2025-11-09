@@ -1,7 +1,7 @@
 # TODOs
 
 - [x] create db schema
-- [ ] create db queries 
+- [x] create db queries 
 - [ ] feed bookmarks into db
 - [ ] create functionality for retrieving a list of user's bookmarks
   - [ ] by guild
