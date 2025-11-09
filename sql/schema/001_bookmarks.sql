@@ -13,8 +13,8 @@ CREATE TABLE channels (
 
 CREATE TABLE bookmarks (
     id INTEGER PRIMARY KEY,
-    guild_id INT NOT NULL REFERENCES guilds(id),
-    channel_id INT NOT NULL REFERENCES channels(id),
+    guild_id INTEGER NOT NULL REFERENCES guilds(id),
+    channel_id INTEGER NOT NULL REFERENCES channels(id),
     author TEXT NOT NULL,
     preview TEXT NOT NULL,
     user_id INT NOT NULL,
