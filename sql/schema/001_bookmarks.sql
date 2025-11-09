@@ -1,12 +1,14 @@
 -- +goose Up
 CREATE TABLE guilds (
     id INT PRIMARY KEY,
-    name TEXT UNIQUE NOT NULL
+    name TEXT UNIQUE NOT NULL,
+    external_id INT UNIQUE NOT NULL
 );
 
 CREATE TABLE channels (
     id INT PRIMARY KEY,
-    name TEXT NOT NULL
+    name TEXT NOT NULL,
+    external_id INT UNIQUE NOT NULL
 );
 
 CREATE TABLE bookmarks (
