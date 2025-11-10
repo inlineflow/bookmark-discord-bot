@@ -6,6 +6,8 @@ package database
 
 import (
 	"time"
+
+	snowflake "github.com/disgoorg/snowflake/v2"
 )
 
 type Bookmark struct {
@@ -14,18 +16,18 @@ type Bookmark struct {
 	ChannelID int64
 	Author    string
 	Preview   string
-	UserID    int64
+	UserID    snowflake.ID
 	CreatedAt time.Time
 }
 
 type Channel struct {
 	ID         int64
 	Name       string
-	ExternalID int64
+	ExternalID snowflake.ID
 }
 
 type Guild struct {
 	ID         int64
 	Name       string
-	ExternalID int64
+	ExternalID snowflake.ID
 }

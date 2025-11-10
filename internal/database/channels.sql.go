@@ -7,6 +7,8 @@ package database
 
 import (
 	"context"
+
+	snowflake "github.com/disgoorg/snowflake/v2"
 )
 
 const createChannel = `-- name: CreateChannel :one
@@ -20,7 +22,7 @@ RETURNING id, name, external_id
 
 type CreateChannelParams struct {
 	Name       string
-	ExternalID int64
+	ExternalID snowflake.ID
 }
 
 func (q *Queries) CreateChannel(ctx context.Context, arg CreateChannelParams) (Channel, error) {
@@ -34,7 +36,7 @@ const getChannel = `-- name: GetChannel :one
 SELECT id, name, external_id FROM channels WHERE external_id = ?
 `
 
-func (q *Queries) GetChannel(ctx context.Context, externalID int64) (Channel, error) {
+func (q *Queries) GetChannel(ctx context.Context, externalID snowflake.ID) (Channel, error) {
 	row := q.db.QueryRowContext(ctx, getChannel, externalID)
 	var i Channel
 	err := row.Scan(&i.ID, &i.Name, &i.ExternalID)

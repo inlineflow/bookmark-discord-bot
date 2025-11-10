@@ -8,6 +8,8 @@ package database
 import (
 	"context"
 	"time"
+
+	snowflake "github.com/disgoorg/snowflake/v2"
 )
 
 const createBookmark = `-- name: CreateBookmark :one
@@ -28,7 +30,7 @@ type CreateBookmarkParams struct {
 	ChannelID int64
 	Author    string
 	Preview   string
-	UserID    int64
+	UserID    snowflake.ID
 	CreatedAt time.Time
 }
 
@@ -59,7 +61,7 @@ DELETE FROM bookmarks WHERE user_id = ? AND id = ?
 `
 
 type DeleteBookmarkForUserByIDParams struct {
-	UserID int64
+	UserID snowflake.ID
 	ID     int64
 }
 
@@ -91,7 +93,7 @@ type GetBookmarksForUserRow struct {
 	CreatedAt   time.Time
 }
 
-func (q *Queries) GetBookmarksForUser(ctx context.Context, userID int64) ([]GetBookmarksForUserRow, error) {
+func (q *Queries) GetBookmarksForUser(ctx context.Context, userID snowflake.ID) ([]GetBookmarksForUserRow, error) {
 	rows, err := q.db.QueryContext(ctx, getBookmarksForUser, userID)
 	if err != nil {
 		return nil, err
@@ -136,7 +138,7 @@ WHERE bookmarks.user_id = ? AND bookmarks.author = ?
 `
 
 type GetBookmarksForUserByAuthorParams struct {
-	UserID int64
+	UserID snowflake.ID
 	Author string
 }
 
@@ -194,7 +196,7 @@ WHERE bookmarks.user_id = ? AND bookmarks.guild_id = ?
 `
 
 type GetBookmarksForUserByGuildParams struct {
-	UserID  int64
+	UserID  snowflake.ID
 	GuildID int64
 }
 
@@ -241,7 +243,7 @@ const resetBookmarksForUser = `-- name: ResetBookmarksForUser :exec
 DELETE FROM bookmarks WHERE user_id = ?
 `
 
-func (q *Queries) ResetBookmarksForUser(ctx context.Context, userID int64) error {
+func (q *Queries) ResetBookmarksForUser(ctx context.Context, userID snowflake.ID) error {
 	_, err := q.db.ExecContext(ctx, resetBookmarksForUser, userID)
 	return err
 }
@@ -251,7 +253,7 @@ DELETE FROM bookmarks WHERE user_id = ? AND author = ?
 `
 
 type ResetBookmarksForUserByAuthorParams struct {
-	UserID int64
+	UserID snowflake.ID
 	Author string
 }
 
@@ -265,7 +267,7 @@ DELETE FROM bookmarks WHERE user_id = ? AND guild_id = ?
 `
 
 type ResetBookmarksForUserByGuildParams struct {
-	UserID  int64
+	UserID  snowflake.ID
 	GuildID int64
 }
 

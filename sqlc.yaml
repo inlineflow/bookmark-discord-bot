@@ -6,3 +6,16 @@ sql:
     gen:
       go:
         out: "internal/database"
+        overrides:
+          - column: "bookmarks.user_id"
+            go_type:
+              import: "github.com/disgoorg/snowflake/v2"
+              type: "ID"
+          - column: "guilds.external_id"
+            go_type:
+              import: "github.com/disgoorg/snowflake/v2"
+              type: "ID"
+          - column: "channels.external_id"
+            go_type:
+              import: "github.com/disgoorg/snowflake/v2"
+              type: "ID"

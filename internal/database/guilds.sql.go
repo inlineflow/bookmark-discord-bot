@@ -7,6 +7,8 @@ package database
 
 import (
 	"context"
+
+	snowflake "github.com/disgoorg/snowflake/v2"
 )
 
 const createGuild = `-- name: CreateGuild :one
@@ -20,7 +22,7 @@ RETURNING id, name, external_id
 
 type CreateGuildParams struct {
 	Name       string
-	ExternalID int64
+	ExternalID snowflake.ID
 }
 
 func (q *Queries) CreateGuild(ctx context.Context, arg CreateGuildParams) (Guild, error) {
@@ -34,7 +36,7 @@ const getGuild = `-- name: GetGuild :one
 SELECT id, name, external_id FROM guilds WHERE external_id = ?
 `
 
-func (q *Queries) GetGuild(ctx context.Context, externalID int64) (Guild, error) {
+func (q *Queries) GetGuild(ctx context.Context, externalID snowflake.ID) (Guild, error) {
 	row := q.db.QueryRowContext(ctx, getGuild, externalID)
 	var i Guild
 	err := row.Scan(&i.ID, &i.Name, &i.ExternalID)
