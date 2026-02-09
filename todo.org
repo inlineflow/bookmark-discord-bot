@@ -1,5 +1,6 @@
-# TODOs
+#+TITLE: TODOs
 
+* Inbox
 - [x] create db schema
 - [x] create db queries 
 - [ ] feed bookmarks into db
