@@ -8,12 +8,9 @@ import (
 	"github.com/disgoorg/disgo"
 )
 
-func init() {
+func main() {
 	logging.SetDefaultLogger("info")
 	slog.Info("starting Bookmark bot")
 	slog.Info("disgo version", "version", disgo.Version)
-}
-
-func main() {
 	bot.Run()
 }
